@@ -6,6 +6,7 @@ import (
 	"os"
 	"fmt"
 	"strconv"
+	"sort"
 )
 
 type GameScore struct{
@@ -37,6 +38,8 @@ func main(){
 	for i,prayerScore := range output{
 		output[i].score_average = (prayerScore.score_sum + prayerScore.count/2) / prayerScore.count
 	}
+
+	sort.Slice(output, func(i, j int) bool { return output[i].score_average < output[j].score_average })
 	fmt.Println(output)
 }
 
