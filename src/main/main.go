@@ -39,7 +39,7 @@ func main(){
 		}
 		if output[i].score_average == output[i+1].score_average{
 		}else{
-			rank = i+1
+			rank = i+2
 		}
 	}
 }
