@@ -24,21 +24,7 @@ type PrayerScore struct{
 
 // データを取得しそのデータからランキングを取得する
 func main(){
-	gameScores := getCsv(os.Args[1])
-	var output []PrayerScore
-	for _,gameScore := range gameScores{
-		index := arrayContains(output,gameScore.player_id)
-		if index == -1{// 配列ないに同じ値がない時
-			output = append(output,PrayerScore{gameScore.player_id,gameScore.score,1,0})
-		}else{
-			output[index].count++
-			output[index].score_sum += gameScore.score
-		}
-	}
-
-	for i,prayerScore := range output{
-		output[i].score_average = (prayerScore.score_sum + prayerScore.count/2) / prayerScore.count
-	}
+	output := getPlayerScore(getCsv(os.Args[1]))
 
 	sort.Slice(output, func(i, j int) bool { return output[i].score_average > output[j].score_average })
 	rank := 1
@@ -58,6 +44,26 @@ func main(){
 	}
 }
 
+
+// ログからそれぞれのプレイヤーのスコアを取得する
+// @param gameScores 取得したゲームのログ
+// @return それぞれのプレイヤーのスコア
+func getPlayerScore(gameScores []GameScore)[]PrayerScore{
+	var output []PrayerScore
+	for _,gameScore := range gameScores{
+		index := arrayContains(output,gameScore.player_id)
+		if index == -1{// 配列ないに同じ値がない時
+			output = append(output,PrayerScore{gameScore.player_id,gameScore.score,1,0})
+		}else{
+			output[index].count++
+			output[index].score_sum += gameScore.score
+		}
+	}
+	for i,prayerScore := range output{
+		output[i].score_average = (prayerScore.score_sum + prayerScore.count/2) / prayerScore.count
+	}
+	return output
+}
 
 // Csvを取得しフォーマットする
 // @param filename 取得するファイル名
