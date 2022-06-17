@@ -1,8 +1,6 @@
 package main
 
 import (
-	"io"
-	"time"
 	"encoding/csv"
 	"log"
 	"os"
@@ -10,10 +8,7 @@ import (
 	"strconv"
 )
 
-const timeFormat = "2021/01/01 12:00"
-
 type GameScore struct{
-	create_timestamp time.Time
 	player_id string
 	score int64
 }
@@ -34,31 +29,24 @@ func getCsv(filename string)[]GameScore{
 	r := csv.NewReader(file)
 	var gameScores []GameScore
 
-	// 1行目を飛ばす
-	r.Read()
+	rows,err := r.ReadAll()
+	if err != nil{
+		log.Fatal(err)
+	}
 
 
-	for{
-		row,err := r.Read()
-		if err != io.EOF{
-			break
+	for i,row := range rows{
+		if i == 0{
+			continue
 		}
 		var t GameScore
-		t.create_timestamp = stoTime(row[0])
+		if i == 1{
+			fmt.Println(row[0])
+		}
 		t.player_id = row[1]
 		temp,_ := strconv.Atoi(row[2])
 		t.score = int64(temp)
 		gameScores = append(gameScores,t)
 	}
 	return gameScores
-}
-
-func stoTime(s string)time.Time{
-	t,_ := time.Parse(timeFormat,s)
-	return t
-}
-
-func timetos(t time.Time)string{
-	s := t.Format(timeFormat)
-	return s
 }
