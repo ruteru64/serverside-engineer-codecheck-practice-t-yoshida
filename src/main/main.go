@@ -13,10 +13,31 @@ type GameScore struct{
 	score int64
 }
 
+type PrayerScore struct{
+	player_id string
+	score_sum int64
+	count int64
+	score_average int64
+}
+
 func main(){
 	fmt.Println(os.Args[1])
-	CSV := getCsv(os.Args[1])
-	fmt.Println(CSV)
+	gameScores := getCsv(os.Args[1])
+	var output []PrayerScore
+	for _,gameScore := range gameScores{
+		index := arrayContains(output,gameScore.player_id)
+		if index == -1{// 配列ないに同じ値がない時
+			output = append(output,PrayerScore{gameScore.player_id,gameScore.score,1,0})
+		}else{
+			output[index].count++
+			output[index].score_sum += gameScore.score
+		}
+	}
+
+	for i,prayerScore := range output{
+		output[i].score_average = (prayerScore.score_sum + prayerScore.count/2) / prayerScore.count
+	}
+	fmt.Println(output)
 }
 
 func getCsv(filename string)[]GameScore{
@@ -36,7 +57,7 @@ func getCsv(filename string)[]GameScore{
 
 
 	for i,row := range rows{
-		if i == 0{
+		if i == 0{// 一行目を握りつぶす
 			continue
 		}
 		var t GameScore
@@ -50,3 +71,12 @@ func getCsv(filename string)[]GameScore{
 	}
 	return gameScores
 }
+
+func arrayContains(arr []PrayerScore, str string) int{
+	for i, v := range arr{
+	  if v.player_id == str{
+		return i
+	  }
+	}
+	return -1
+  }
