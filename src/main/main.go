@@ -47,6 +47,10 @@ func main(){
 	}
 }
 
+
+// Csvを取得しフォーマットする
+// @param filename 取得するファイル名
+// @return 取得したCSVをフォーマットしたもの
 func getCsv(filename string)[]GameScore{
 	file,err := os.Open(filename)
 	if err != nil{
@@ -76,6 +80,11 @@ func getCsv(filename string)[]GameScore{
 	return gameScores
 }
 
+
+// 配列の中から指定した文字列を探す
+// @pram arr 探す配列
+// @pram str 探す文字列
+// @return 見つかった時配列のindex、見つからなかった時-1
 func arrayContains(arr []PrayerScore, str string) int{
 	for i, v := range arr{
 	  if v.player_id == str{
@@ -83,4 +92,4 @@ func arrayContains(arr []PrayerScore, str string) int{
 	  }
 	}
 	return -1
-  }
+}
