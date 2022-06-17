@@ -29,7 +29,7 @@ func main(){
 	sort.Slice(output, func(i, j int) bool { return output[i].score_average > output[j].score_average })
 	rank := 1
 	fmt.Println("rank,player_id,mean_score")
-	for i:=0;rank<10;i++{
+	for i:=0;rank<=10;i++{
 		if i >= len(output){
 			return
 		}
