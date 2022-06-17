@@ -22,7 +22,6 @@ type PrayerScore struct{
 }
 
 func main(){
-	fmt.Println(os.Args[1])
 	gameScores := getCsv(os.Args[1])
 	var output []PrayerScore
 	for _,gameScore := range gameScores{
@@ -40,7 +39,12 @@ func main(){
 	}
 
 	sort.Slice(output, func(i, j int) bool { return output[i].score_average < output[j].score_average })
-	fmt.Println(output)
+	for i:=0;i<10;i++{
+		if i >= len(output){
+			return
+		}
+		fmt.Printf("%d,%s,%d\n",i,output[i].player_id,output[i].score_average)
+	}
 }
 
 func getCsv(filename string)[]GameScore{
@@ -64,9 +68,6 @@ func getCsv(filename string)[]GameScore{
 			continue
 		}
 		var t GameScore
-		if i == 1{
-			fmt.Println(row[0])
-		}
 		t.player_id = row[1]
 		temp,_ := strconv.Atoi(row[2])
 		t.score = int64(temp)
