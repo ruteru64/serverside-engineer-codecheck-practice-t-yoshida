@@ -21,6 +21,8 @@ type PrayerScore struct{
 	score_average int64
 }
 
+
+// データを取得しそのデータからランキングを取得する
 func main(){
 	gameScores := getCsv(os.Args[1])
 	var output []PrayerScore
