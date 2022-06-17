@@ -38,12 +38,21 @@ func main(){
 		output[i].score_average = (prayerScore.score_sum + prayerScore.count/2) / prayerScore.count
 	}
 
-	sort.Slice(output, func(i, j int) bool { return output[i].score_average < output[j].score_average })
-	for i:=0;i<10;i++{
+	sort.Slice(output, func(i, j int) bool { return output[i].score_average > output[j].score_average })
+	rank := 1
+	fmt.Println("rank,player_id,mean_score")
+	for i:=0;rank<10;i++{
 		if i >= len(output){
 			return
 		}
-		fmt.Printf("%d,%s,%d\n",i,output[i].player_id,output[i].score_average)
+		fmt.Printf("%d,%s,%d\n",rank,output[i].player_id,output[i].score_average)
+		if i+1 >= len(output){
+			return
+		}
+		if output[i].score_average == output[i+1].score_average{
+		}else{
+			rank = i+1
+		}
 	}
 }
 
